@@ -3,16 +3,23 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FcPlus } from 'react-icons/fc';
 
-const ModalCreateUser = () => {
-    const [show, setShow] = useState(false);
+const ModalCreateUser = (props) => {
+    const { show, setShow } = props
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = () => {
+        setShow(false);
+        setEmail("")
+        setPassword("")
+        setUsername("")
+        setrole("USER")
+        setImage("")
+        setPreviewImage("")
+    }
 
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    const [Role, setRole] = useState("USER")
+    const [role, setrole] = useState("USER")
     const [image, setImage] = useState("")
     const [previewImage, setPreviewImage] = useState("")
 
@@ -25,12 +32,22 @@ const ModalCreateUser = () => {
         }
     }
 
+    const handleSubmitCreateUser = () => {
+        let data = {
+            email: email,
+            password: password,
+            username: username,
+            role: role,
+            userImage: image
+        }
+        console.log(data)
+    }
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
+            {/* <Button variant="primary" onClick={handleShow}>
                 Launch demo modal
-            </Button>
+            </Button> */}
 
             <Modal
                 show={show}
@@ -72,8 +89,8 @@ const ModalCreateUser = () => {
                             />
                         </div>
                         <div className="col-md-4">
-                            <label className="form-label">Role</label>
-                            <select className="form-select" onChange={(event) => setRole(event.target.value)}>
+                            <label className="form-label">role</label>
+                            <select className="form-select" onChange={(event) => setrole(event.target.value)}>
                                 <option value="USER">User</option>
                                 <option value="ADMIN">Admin</option>
                             </select>
@@ -102,7 +119,7 @@ const ModalCreateUser = () => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button variant="primary" onClick={() => handleSubmitCreateUser()}>
                         Save
                     </Button>
                 </Modal.Footer>
