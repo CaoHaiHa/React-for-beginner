@@ -1,13 +1,17 @@
+import { useEffect } from 'react';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FcPlus } from 'react-icons/fc';
 import { toast } from 'react-toastify';
+import _ from 'lodash';
 
-const ModalCreateUser = (props) => {
-    const { show, setShow } = props
+const ModalUpdateUser = (props) => {
+
+    const { show, setShow, dataUpdate } = props
+
     const handleClose = () => {
-        setShow(false);
+        setShow(false)
         setEmail("")
         setPassword("")
         setUsername("")
@@ -23,6 +27,14 @@ const ModalCreateUser = (props) => {
     const [image, setImage] = useState("")
     const [previewImage, setPreviewImage] = useState("")
 
+    useEffect(() => {
+        if (!_.isEmpty(dataUpdate)) {
+            setEmail(dataUpdate.email)
+            setUsername(dataUpdate.username)
+            setRole(dataUpdate.role)
+        }
+    }, [dataUpdate])
+
     const handleUploadImage = (event) => {
         if (event.target && event.target.files && event.target.files[0]) {
             setPreviewImage(URL.createObjectURL(event.target.files[0]))
@@ -32,28 +44,16 @@ const ModalCreateUser = (props) => {
         }
     }
 
-    const handleSubmitCreateUser = () => {
-        let data = {
-            email: email,
-            password: password,
-            username: username,
-            role: role,
-            userImage: image
-        }
-        let user = {
+    const handleSubmitUpdateUser = () => {
+        let newUserUpdate = {
             email: email,
             username: username,
             role: role,
             image: previewImage
         }
-        console.log(data)
-        if (!data.email || !data.password) {
-            toast.error("Create user fail")
-        } else {
-            toast.success("Create user success")
-            props.addNewUser(user)
-            handleClose()
-        }
+        props.updateUser(newUserUpdate)
+        toast.success("Update user success")
+        setShow(false)
     }
 
     const validateEmail = (email) => {
@@ -78,7 +78,7 @@ const ModalCreateUser = (props) => {
                 className='modal-add-user'
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Add new user</Modal.Title>
+                    <Modal.Title>Update a user</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form className="row g-3">
@@ -88,6 +88,7 @@ const ModalCreateUser = (props) => {
                                 type="email"
                                 className="form-control"
                                 value={email}
+                                disabled
                                 onChange={(event) => setEmail(event.target.value)}
                                 onBlur={(event) => {
                                     if (!validateEmail(event.target.value)) {
@@ -105,6 +106,7 @@ const ModalCreateUser = (props) => {
                                 type="password"
                                 className="form-control"
                                 value={password}
+                                disabled
                                 onChange={(event) => setPassword(event.target.value)}
                                 onBlur={(event) => {
                                     if (!event.target.value) {
@@ -156,8 +158,9 @@ const ModalCreateUser = (props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => handleSubmitCreateUser()}>
-                        Save
+
+                    <Button variant="primary" onClick={() => handleSubmitUpdateUser()}>
+                        Update
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -165,4 +168,4 @@ const ModalCreateUser = (props) => {
     );
 }
 
-export default ModalCreateUser;
+export default ModalUpdateUser;

@@ -3,10 +3,14 @@ import './ManageUser.scss';
 import { FcPlus } from 'react-icons/fc';
 import { useState } from "react";
 import TableUser from "./TableUser";
+import ModalUpdateUser from "./ModalUpdateUser";
+import { toast } from 'react-toastify';
 
-const ManageUser = (props) => {
+const ManageUser = () => {
 
-    const [showModal, setShowModal] = useState(false)
+    const [showModalCreateUser, setShowModalCreateUser] = useState(false)
+    const [showModalUpdateUser, setShowModalUpdateUser] = useState(false)
+    const [dataUpdate, setDataUpdate] = useState({})
     const [listUsers, setListUsers] = useState([
         {
             email: "yeahsure@gmail.com",
@@ -32,6 +36,29 @@ const ManageUser = (props) => {
         newListUsers = [...newListUsers, user]
         setListUsers(newListUsers)
     }
+    const handleClickBtnUpdate = (user) => {
+        setShowModalUpdateUser(true)
+        setDataUpdate(user)
+    }
+    const updateUser = (userUpdate) => {
+        let newListUsers = [...listUsers]
+        newListUsers = newListUsers.map((user) => {
+            if (user.email === userUpdate.email) {
+                user = userUpdate
+                return user
+            } else {
+                return user
+            }
+        })
+        console.log(newListUsers)
+        setListUsers(newListUsers)
+    }
+    const handleClickBtnDelete = (user) => {
+        let newListUsers = [...listUsers]
+        newListUsers = newListUsers.filter((item) => item.email !== user.email)
+        setListUsers(newListUsers)
+        toast.success("Delete user success")
+    }
 
     return (
         <div className="manage-user-container">
@@ -42,21 +69,29 @@ const ManageUser = (props) => {
                 <div className="btn-add-new">
                     <button
                         className="btn btn-warning"
-                        onClick={() => setShowModal(true)}
+                        onClick={() => setShowModalCreateUser(true)}
                     >
-                        <FcPlus />Add new user
+                        <FcPlus /> Add new user
                     </button>
                 </div>
                 <div className="table-users-container">
                     <TableUser
                         listUsers={listUsers}
+                        handleClickBtnUpdate={handleClickBtnUpdate}
+                        handleClickBtnDelete={handleClickBtnDelete}
                     />
 
                 </div>
                 <ModalCreateUser
-                    show={showModal}
-                    setShow={setShowModal}
+                    show={showModalCreateUser}
+                    setShow={setShowModalCreateUser}
                     addNewUser={addNewUser}
+                />
+                <ModalUpdateUser
+                    show={showModalUpdateUser}
+                    setShow={setShowModalUpdateUser}
+                    dataUpdate={dataUpdate}
+                    updateUser={updateUser}
                 />
             </div>
         </div>
