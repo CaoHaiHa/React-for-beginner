@@ -2,7 +2,7 @@ import { useEffect } from "react"
 
 const TableUser = (props) => {
 
-    const { listUsers, setListUsers } = props
+    const { listUsers } = props
 
     //componentDidMount
     useEffect(() => {
@@ -14,7 +14,7 @@ const TableUser = (props) => {
             <table className="table table-striped table-info table-hover table-bordered border-dark">
                 <thead>
                     <tr>
-                        <th scope="col">No</th>
+                        <th scope="col">ID</th>
                         <th scope="col">Email</th>
                         <th scope="col">Username</th>
                         <th scope="col">Role</th>

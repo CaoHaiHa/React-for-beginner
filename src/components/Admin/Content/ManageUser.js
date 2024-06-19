@@ -50,14 +50,13 @@ const ManageUser = (props) => {
                 <div className="table-users-container">
                     <TableUser
                         listUsers={listUsers}
-                        setListUsers={setListUsers}
                     />
 
                 </div>
                 <ModalCreateUser
                     show={showModal}
                     setShow={setShowModal}
-                    addNewUser={(user) => addNewUser(user)}
+                    addNewUser={addNewUser}
                 />
             </div>
         </div>
