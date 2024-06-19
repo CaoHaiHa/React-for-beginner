@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FcPlus } from 'react-icons/fc';
+import { toast } from 'react-toastify';
 
 const ModalCreateUser = (props) => {
     const { show, setShow } = props
@@ -41,7 +42,21 @@ const ModalCreateUser = (props) => {
             userImage: image
         }
         console.log(data)
+        if (!data.email || !data.password) {
+            toast.error("Create user fail")
+        } else {
+            toast.success("Create user success")
+            handleClose()
+        }
     }
+
+    const validateEmail = (email) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+    };
 
     return (
         <>
@@ -68,6 +83,14 @@ const ModalCreateUser = (props) => {
                                 className="form-control"
                                 value={email}
                                 onChange={(event) => setEmail(event.target.value)}
+                                onBlur={(event) => {
+                                    if (!validateEmail(event.target.value)) {
+                                        toast.error("Invalid email")
+                                        setEmail("")
+                                    } else {
+                                        setEmail(event.target.value)
+                                    }
+                                }}
                             />
                         </div>
                         <div className="col-md-6">
@@ -77,6 +100,14 @@ const ModalCreateUser = (props) => {
                                 className="form-control"
                                 value={password}
                                 onChange={(event) => setPassword(event.target.value)}
+                                onBlur={(event) => {
+                                    if (!event.target.value) {
+                                        toast.error("Invalid password")
+                                        setPassword("")
+                                    } else {
+                                        setPassword(event.target.value)
+                                    }
+                                }}
                             />
                         </div>
                         <div className="col-md-6">
