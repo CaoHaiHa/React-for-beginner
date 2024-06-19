@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 
 const ModalCreateUser = (props) => {
     const { show, setShow } = props
-
     const handleClose = () => {
         setShow(false);
         setEmail("")
@@ -41,11 +40,18 @@ const ModalCreateUser = (props) => {
             role: role,
             userImage: image
         }
+        let user = {
+            email: email,
+            username: username,
+            role: role,
+            image: previewImage
+        }
         console.log(data)
         if (!data.email || !data.password) {
             toast.error("Create user fail")
         } else {
             toast.success("Create user success")
+            props.addNewUser(user)
             handleClose()
         }
     }

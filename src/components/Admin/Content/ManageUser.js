@@ -7,6 +7,31 @@ import TableUser from "./TableUser";
 const ManageUser = (props) => {
 
     const [showModal, setShowModal] = useState(false)
+    const [listUsers, setListUsers] = useState([
+        {
+            email: "yeahsure@gmail.com",
+            username: "Yeah Sure",
+            role: "USER",
+            image: ""
+        },
+        {
+            email: "hoidanit@gmail.com",
+            username: "Hoi Dan IT",
+            role: "USER",
+            image: ""
+        },
+        {
+            email: "caohaiha@gmail.com",
+            username: "Cao Hai Ha",
+            role: "ADMIN",
+            image: ""
+        }
+    ])
+    const addNewUser = (user) => {
+        let newListUsers = [...listUsers]
+        newListUsers = [...newListUsers, user]
+        setListUsers(newListUsers)
+    }
 
     return (
         <div className="manage-user-container">
@@ -23,12 +48,16 @@ const ManageUser = (props) => {
                     </button>
                 </div>
                 <div className="table-users-container">
-                    <TableUser />
+                    <TableUser
+                        listUsers={listUsers}
+                        setListUsers={setListUsers}
+                    />
 
                 </div>
                 <ModalCreateUser
                     show={showModal}
                     setShow={setShowModal}
+                    addNewUser={(user) => addNewUser(user)}
                 />
             </div>
         </div>
