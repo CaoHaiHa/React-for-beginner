@@ -5,12 +5,15 @@ import { useState } from "react";
 import TableUser from "./TableUser";
 import ModalUpdateUser from "./ModalUpdateUser";
 import { toast } from 'react-toastify';
+import ModalViewUser from "./ModalViewUser";
 
 const ManageUser = () => {
 
     const [showModalCreateUser, setShowModalCreateUser] = useState(false)
     const [showModalUpdateUser, setShowModalUpdateUser] = useState(false)
+    const [showModalViewUser, setShowModalViewUser] = useState(false)
     const [dataUpdate, setDataUpdate] = useState({})
+    const [dataView, setDataView] = useState({})
     const [listUsers, setListUsers] = useState([
         {
             email: "yeahsure@gmail.com",
@@ -56,8 +59,16 @@ const ManageUser = () => {
     const handleClickBtnDelete = (user) => {
         let newListUsers = [...listUsers]
         newListUsers = newListUsers.filter((item) => item.email !== user.email)
-        setListUsers(newListUsers)
-        toast.success("Delete user success")
+        if (confirm('Are you sure to delete user?')) {
+            setListUsers(newListUsers)
+            toast.success(`Delete user ${user.username} success`)
+        } else {
+            toast.error("Delete user fail")
+        }
+    }
+    const handleClickShowView = (user) => {
+        setShowModalViewUser(true)
+        setDataView(user)
     }
 
     return (
@@ -79,6 +90,7 @@ const ManageUser = () => {
                         listUsers={listUsers}
                         handleClickBtnUpdate={handleClickBtnUpdate}
                         handleClickBtnDelete={handleClickBtnDelete}
+                        handleClickShowView={handleClickShowView}
                     />
 
                 </div>
@@ -92,6 +104,11 @@ const ManageUser = () => {
                     setShow={setShowModalUpdateUser}
                     dataUpdate={dataUpdate}
                     updateUser={updateUser}
+                />
+                <ModalViewUser
+                    show={showModalViewUser}
+                    setShow={setShowModalViewUser}
+                    dataView={dataView}
                 />
             </div>
         </div>

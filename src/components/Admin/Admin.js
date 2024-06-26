@@ -16,7 +16,11 @@ const Admin = () => {
             </div>
             <div className="admin-content">
                 <div className="admin-header">
-                    <FaBars onClick={() => setCollapsed(!collapsed)} />
+                    <FaBars
+                        onClick={() => setCollapsed(!collapsed)}
+                        color="white"
+                        size="1.5em"
+                    />
                 </div>
                 <div className="admin-main">
                     <Outlet />
